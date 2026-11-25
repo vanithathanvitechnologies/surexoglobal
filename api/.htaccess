@@ -1,0 +1,20 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Pass Authorization header through to PHP on cPanel / Apache CGI / FastCGI
+  RewriteCond %{HTTP:Authorization} ^(.*)
+  RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+  # Block direct web access to internal config/helpers/sql files
+  RewriteRule ^(config|helpers)/ - [F,L]
+  RewriteRule ^database/.*\.sql$ - [F,L]
+
+  # Allow direct execution of existing PHP endpoints (e.g. api/website/products.php)
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # Route clean REST paths (e.g. api/website/products -> api/index.php?route=website/products)
+  RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
+</IfModule>

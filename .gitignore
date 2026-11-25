@@ -1,0 +1,14 @@
+# OS & editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.log
+
+# Local environment overrides
+.env
+.env.local
+
+# Keep uploads directory & security rules, ignore runtime user uploads
+uploads/*
+!uploads/.htaccess
